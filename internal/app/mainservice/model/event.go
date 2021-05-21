@@ -25,5 +25,5 @@ type EventDB struct {
 }
 
 func (eventDB EventDB) DBtoevent() Event {
-	return Event{Host: eventDB.Host, EventName: eventDB.EventName, MaximumTicketCapacity: eventDB.MaximumTicketCapacity}
+	return Event{Id: eventDB.Id, Host: eventDB.Host, EventName: eventDB.EventName, MaximumTicketCapacity: eventDB.MaximumTicketCapacity}
 }
