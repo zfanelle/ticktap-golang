@@ -20,6 +20,8 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type TicketingServiceClient interface {
 	CreateTickets(ctx context.Context, in *TicketCreationRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
+	GetTicket(ctx context.Context, in *TicketId, opts ...grpc.CallOption) (*Ticket, error)
+	GetAllTickets(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Tickets, error)
 }
 
 type ticketingServiceClient struct {
@@ -39,11 +41,31 @@ func (c *ticketingServiceClient) CreateTickets(ctx context.Context, in *TicketCr
 	return out, nil
 }
 
+func (c *ticketingServiceClient) GetTicket(ctx context.Context, in *TicketId, opts ...grpc.CallOption) (*Ticket, error) {
+	out := new(Ticket)
+	err := c.cc.Invoke(ctx, "/TicketingService/GetTicket", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *ticketingServiceClient) GetAllTickets(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*Tickets, error) {
+	out := new(Tickets)
+	err := c.cc.Invoke(ctx, "/TicketingService/GetAllTickets", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TicketingServiceServer is the server API for TicketingService service.
 // All implementations must embed UnimplementedTicketingServiceServer
 // for forward compatibility
 type TicketingServiceServer interface {
 	CreateTickets(context.Context, *TicketCreationRequest) (*emptypb.Empty, error)
+	GetTicket(context.Context, *TicketId) (*Ticket, error)
+	GetAllTickets(context.Context, *emptypb.Empty) (*Tickets, error)
 	mustEmbedUnimplementedTicketingServiceServer()
 }
 
@@ -53,6 +75,12 @@ type UnimplementedTicketingServiceServer struct {
 
 func (UnimplementedTicketingServiceServer) CreateTickets(context.Context, *TicketCreationRequest) (*emptypb.Empty, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateTickets not implemented")
+}
+func (UnimplementedTicketingServiceServer) GetTicket(context.Context, *TicketId) (*Ticket, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTicket not implemented")
+}
+func (UnimplementedTicketingServiceServer) GetAllTickets(context.Context, *emptypb.Empty) (*Tickets, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllTickets not implemented")
 }
 func (UnimplementedTicketingServiceServer) mustEmbedUnimplementedTicketingServiceServer() {}
 
@@ -85,6 +113,42 @@ func _TicketingService_CreateTickets_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TicketingService_GetTicket_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(TicketId)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TicketingServiceServer).GetTicket(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/TicketingService/GetTicket",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TicketingServiceServer).GetTicket(ctx, req.(*TicketId))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TicketingService_GetAllTickets_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TicketingServiceServer).GetAllTickets(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/TicketingService/GetAllTickets",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TicketingServiceServer).GetAllTickets(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TicketingService_ServiceDesc is the grpc.ServiceDesc for TicketingService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -95,6 +159,14 @@ var TicketingService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateTickets",
 			Handler:    _TicketingService_CreateTickets_Handler,
+		},
+		{
+			MethodName: "GetTicket",
+			Handler:    _TicketingService_GetTicket_Handler,
+		},
+		{
+			MethodName: "GetAllTickets",
+			Handler:    _TicketingService_GetAllTickets_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

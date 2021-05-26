@@ -1,5 +1,4 @@
 syntax = "proto3";
-//package ticketing;
 
 import "google/protobuf/empty.proto";
 
@@ -27,15 +26,8 @@ message Tickets {
   int32 id = 1;
   }
 
-
-message None {
-}
-
-
-//google.protobuf.Empty
-
 service TicketingService {
   rpc CreateTickets(TicketCreationRequest) returns (google.protobuf.Empty) {}
-  // rpc GetTicket(TicketId) returns (Ticket) {}
-  // rpc GetAllTickets(google.protobuf.Empty) returns (Tickets) {}
+  rpc GetTicket(TicketId) returns (Ticket) {}
+  rpc GetAllTickets(google.protobuf.Empty) returns (Tickets) {}
 }
