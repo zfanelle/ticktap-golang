@@ -1,16 +1,16 @@
 package model
 
 type Ticket struct {
-	Id       int    `json:"id"`
-	Account  int    `json:"account"`
-	Event    string `json:"event"`
-	Quantity string `json:"entity_type"`
+	Id       int `json:"id"`
+	Account  int `json:"account"`
+	Event    int `json:"event"`
+	Quantity int `json:"entity_type"`
 }
 
 type TicketDB struct {
-	Id      int    `db:"id"`
-	Account int    `db:"account"`
-	Event   string `db:"event"`
+	Id      int `db:"id"`
+	Account int `db:"account"`
+	Event   int `db:"event"`
 }
 
 func (ticketDB TicketDB) DBtoTicket() Ticket {
