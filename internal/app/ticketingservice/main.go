@@ -6,7 +6,8 @@ import (
 	"log"
 	"net"
 
-	pb "github.com/zfanelle/ticktap-golang/internal/app/mainservice/protos"
+	config "github.com/zfanelle/ticktap-golang/internal/app/ticketingservice/config"
+	pb "github.com/zfanelle/ticktap-golang/internal/app/ticketingservice/protos"
 	"google.golang.org/grpc"
 	empty "google.golang.org/protobuf/types/known/emptypb"
 )
@@ -40,6 +41,10 @@ func (s *server) GetAllTickets(ctx context.Context, none *empty.Empty) (*pb.Tick
 }
 
 func main() {
+
+	appConfig := &config.AppConfig{}
+
+	appConfig.Configure()
 
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 9000))
 	if err != nil {
