@@ -23,6 +23,22 @@ func (s *server) CreateTickets(ctx context.Context, in *pb.TicketCreationRequest
 
 }
 
+func (s *server) GetTicket(ctx context.Context, in *pb.TicketId) (*pb.Ticket, error) {
+
+	log.Printf("Getting ticket")
+
+	return &pb.Ticket{}, nil
+
+}
+
+func (s *server) GetAllTickets(ctx context.Context, none *empty.Empty) (*pb.Tickets, error) {
+
+	log.Printf("Getting all tickets")
+
+	return &pb.Tickets{}, nil
+
+}
+
 func main() {
 
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", 9000))
