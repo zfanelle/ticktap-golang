@@ -14,6 +14,7 @@ import (
 
 type server struct {
 	pb.UnimplementedTicketingServiceServer
+	AppConfig *config.AppConfig
 }
 
 func (s *server) CreateTickets(ctx context.Context, in *pb.TicketCreationRequest) (*empty.Empty, error) {
@@ -53,7 +54,7 @@ func main() {
 
 	grpcServer := grpc.NewServer()
 
-	pb.RegisterTicketingServiceServer(grpcServer, &server{})
+	pb.RegisterTicketingServiceServer(grpcServer, &server{AppConfig: appConfig})
 
 	if err := grpcServer.Serve(lis); err != nil {
 		log.Fatalf("failed to serve: %s", err)
