@@ -41,7 +41,7 @@ CREATE TABLE ticktap.`transaction` (
 
 CREATE TABLE ticktap.`ticket` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `transaction` int NOT NULL,
-  PRIMARY KEY (`id`),
-  CONSTRAINT `ticket_FK` FOREIGN KEY (`id`) REFERENCES `transaction` (`id`)
-) ENGINE=InnoDB  AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `event` int NOT NULL,
+  `account` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
