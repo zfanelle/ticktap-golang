@@ -11,7 +11,7 @@ func CreateTicket(appConfig config.AppConfig, newTicket ticket.Ticket) {
 
 	db := appConfig.DB
 
-	sql := fmt.Sprintf("INSERT INTO ticktap.Ticket (event,account) VALUES (%d, %d)", newTicket.Event, newTicket.Account)
+	sql := fmt.Sprintf("INSERT INTO ticktap.ticket (event,account) VALUES (%d, %d)", newTicket.Event, newTicket.Account)
 
 	db.MustExec(sql)
 

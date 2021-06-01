@@ -8,7 +8,9 @@ import (
 
 func CreateTicket(appConfig config.AppConfig, newTicket ticket.Ticket) {
 
-	repository.CreateTicket(appConfig, newTicket)
+	for i := 0; i <= newTicket.Quantity; i++ {
+		repository.CreateTicket(appConfig, newTicket)
+	}
 
 }
 

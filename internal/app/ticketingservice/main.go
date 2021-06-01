@@ -7,7 +7,9 @@ import (
 	"net"
 
 	config "github.com/zfanelle/ticktap-golang/internal/app/ticketingservice/config"
+	model "github.com/zfanelle/ticktap-golang/internal/app/ticketingservice/model"
 	pb "github.com/zfanelle/ticktap-golang/internal/app/ticketingservice/protos"
+	service "github.com/zfanelle/ticktap-golang/internal/app/ticketingservice/service"
 	"google.golang.org/grpc"
 	empty "google.golang.org/protobuf/types/known/emptypb"
 )
@@ -19,7 +21,13 @@ type server struct {
 
 func (s *server) CreateTickets(ctx context.Context, in *pb.TicketCreationRequest) (*empty.Empty, error) {
 
-	log.Printf("Received: Request")
+	ticket := model.Ticket{}
+
+	ticket.ProtoCreateTicketToTicket(in)
+
+	service.CreateTicket(*s.AppConfig, ticket)
+
+	log.Printf("Creating Tickets")
 
 	return &empty.Empty{}, nil
 
@@ -29,7 +37,9 @@ func (s *server) GetTicket(ctx context.Context, in *pb.TicketId) (*pb.Ticket, er
 
 	log.Printf("Getting ticket")
 
-	return &pb.Ticket{}, nil
+	ticket := service.GetTicket(*s.AppConfig, int(in.GetId()))
+
+	return &pb.Ticket{Id: int32(ticket.Id), Event: int32(ticket.Event), Account: int32(ticket.Account)}, nil
 
 }
 
@@ -37,7 +47,20 @@ func (s *server) GetAllTickets(ctx context.Context, none *empty.Empty) (*pb.Tick
 
 	log.Printf("Getting all tickets")
 
-	return &pb.Tickets{}, nil
+	tickets := service.GetAllTickets(*s.AppConfig)
+
+	protoTickets := pb.Tickets{}
+
+	protoTicketsList := protoTickets.GetTickets()
+
+	for _, s := range tickets {
+		newTicket := model.TicketToProtoTicket(s)
+		protoTicketsList = append(protoTicketsList, &newTicket)
+	}
+
+	protoTickets.Tickets = protoTicketsList
+
+	return &protoTickets, nil
 
 }
 
