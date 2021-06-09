@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option go_package = "github.com/zfanelle/ticktap-golang/internal/app/mainservice/config/protos";
+
+message TicketCreationRequest {
+  int32 account = 1;
+  int32 event = 2;
+  int32 quantity = 3;
+}
+
+message Ticket {
+    int32 id = 1;
+    int32 account = 2;
+    int32 event = 3;
+    int32 quantity = 4;
+  }
+
+
+message Tickets {
+  repeated Ticket tickets = 1;
+}
+
+  message TicketId {
+  int32 id = 1;
+  }
+
+service TicketingService {
+  rpc CreateTickets(TicketCreationRequest) returns (google.protobuf.Empty) {}
+  rpc GetTicket(TicketId) returns (Ticket) {}
+  rpc GetAllTickets(google.protobuf.Empty) returns (Tickets) {}
+}
