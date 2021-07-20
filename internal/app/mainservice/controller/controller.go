@@ -18,6 +18,8 @@ func ConfigureRoutes(appConfig config.AppConfig) *mux.Router {
 	router.Methods("POST").Path("/transaction").HandlerFunc(CreateTransaction(appConfig))
 	router.Methods("GET").Path("/transaction").HandlerFunc(GetAllTransactions(appConfig))
 	router.Methods("GET").Path("/transaction/{id}").HandlerFunc(GetTransaction(appConfig))
+	router.Methods("GET").Path("/ticket").HandlerFunc(GetAllTickets(appConfig))
+	router.Methods("GET").Path("/ticket/{id}").HandlerFunc(GetTicket(appConfig))
 	return router
 
 }
